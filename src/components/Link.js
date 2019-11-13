@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 
 class Link extends Component {
   render() {
+  	const { link } = this.props
+
     return (
       <div>
         <div>
-          {this.props.link.description} ({this.props.link.url})
+          {link.description} ({link.url})
         </div>
       </div>
     )
