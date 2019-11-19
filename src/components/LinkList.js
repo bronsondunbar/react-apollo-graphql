@@ -1,20 +1,12 @@
 import React, { Component } from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import Link from './Link'
 
 import { FEED_QUERY } from '../constants'
 
+import Link from './Link'
+
 class LinkList extends Component {
-  // _updateCacheAfterVote = (store, createVote, linkId) => {
-  //   const data = store.readQuery({ query: FEED_QUERY })
-
-  //   const votedLink = data.feed.links.find(link => link.id === linkId)
-  //   votedLink.votes = createVote.link.votes
-
-  //   store.writeQuery({ query: FEED_QUERY, data })
-  // }
-
   render() {
     return (
       <Query query={FEED_QUERY}>

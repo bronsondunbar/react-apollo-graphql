@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
+
 import { AUTH_TOKEN, FEED_QUERY } from '../constants'
 import { timeDifferenceForDate } from '../utils'
 
