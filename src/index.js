@@ -20,7 +20,7 @@ import { AUTH_TOKEN } from './constants'
 
 // 2
 const httpLink = createHttpLink({
-  uri: 'http://naughty-albattani-bf6cc5.netlify.com:4000'
+  uri: 'http://localhost:4000'
 })
 
 const authLink = setContext((_, { headers }) => {
@@ -34,7 +34,7 @@ const authLink = setContext((_, { headers }) => {
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://naughty-albattani-bf6cc5.netlify.com:4000`,
+  uri: `ws://localhost:4000`,
   options: {
     reconnect: true,
     connectionParams: {
