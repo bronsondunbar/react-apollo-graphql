@@ -21,10 +21,10 @@
   },
   "scripts": {
     "start-js": "react-scripts start",
-    "start-server": "node server/src/index.js",
+    "start-server": "node src/lambda/src/index.js",
     "start": "npm-run-all -p start-js start-server",
     "build-js": "react-scripts build",
-    "build-server": "netlify-lambda build server/src",
+    "build-server": "netlify-lambda build src/lambda/src",
     "build": "npm-run-all -p build-js build-server",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
