@@ -1,10 +1,11 @@
 import gql from 'graphql-tag'
 
 export const AUTH_TOKEN = 'auth-token'
+export const LINKS_PER_PAGE = 1
 
 export const FEED_QUERY = gql`
-  {
-    feed {
+  query FeedQuery($first: Int, $skip: Int, $orderBy: LinkOrderByInput) {
+    feed(first: $first, skip: $skip, orderBy: $orderBy) {
       links {
         id
         createdAt
@@ -21,6 +22,7 @@ export const FEED_QUERY = gql`
           }
         }
       }
+      count
     }
   }
 `
