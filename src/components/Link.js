@@ -7,7 +7,7 @@ import { timeDifferenceForDate } from '../utils'
 
 const VOTE_MUTATION = gql`
   mutation VoteMutation($linkId: ID!) {
-    vote(linkId: $linkId) {
+    userVote(linkId: $linkId) {
       id
       link {
         votes {

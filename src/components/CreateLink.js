@@ -6,7 +6,7 @@ import { FEED_QUERY } from '../constants'
 
 const POST_MUTATION = gql`
   mutation PostMutation($description: String!, $url: String!) {
-    post(description: $description, url: $url) {
+    createLink(description: $description, url: $url) {
       id
       createdAt
       url

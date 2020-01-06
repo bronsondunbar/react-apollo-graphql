@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const AUTH_TOKEN = 'auth-token'
-export const LINKS_PER_PAGE = 1
+export const LINKS_PER_PAGE = 5
 
 export const FEED_QUERY = gql`
   query FeedQuery($first: Int, $skip: Int, $orderBy: LinkOrderByInput) {
