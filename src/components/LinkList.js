@@ -61,14 +61,14 @@ class LinkList extends Component {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
         const newLink = subscriptionData.data.newLink
-        const exists = prev.feed.links.find(({ id }) => id === newLink.id);
+        const exists = prev.allLinks.links.find(({ id }) => id === newLink.id);
         if (exists) return prev;
 
         return Object.assign({}, prev, {
           feed: {
-            links: [newLink, ...prev.feed.links],
-            count: prev.feed.links.length + 1,
-            __typename: prev.feed.__typename
+            links: [newLink, ...prev.allLinks.links],
+            count: prev.allLinks.links.length + 1,
+            __typename: prev.allLinks.__typename
           }
         })
       }
@@ -94,16 +94,16 @@ class LinkList extends Component {
   _getLinksToRender = data => {
     const isNewPage = this.props.location.pathname.includes('new')
     if (isNewPage) {
-      return data.feed.links
+      return data.allLinks.links
     }
-    const rankedLinks = data.feed.links.slice()
+    const rankedLinks = data.allLinks.links.slice()
     rankedLinks.sort((l1, l2) => l2.votes.length - l1.votes.length)
     return rankedLinks
   }
 
   _nextPage = data => {
     const page = parseInt(this.props.match.params.page, 10)
-    if (page <= data.feed.count / LINKS_PER_PAGE) {
+    if (page <= data.allLinks.count / LINKS_PER_PAGE) {
       const nextPage = page + 1
       this.props.history.push(`/new/${nextPage}`)
     }
