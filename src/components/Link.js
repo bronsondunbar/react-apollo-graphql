@@ -1,44 +1,29 @@
 import React, { Component } from 'react'
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
 
-import { AUTH_TOKEN, FEED_QUERY } from '../constants'
+import { AUTH_TOKEN } from '../constants'
 import { timeDifferenceForDate } from '../utils'
 
-const VOTE_MUTATION = gql`
-  mutation VoteMutation($linkId: ID!) {
-    userVote(linkId: $linkId) {
-      id
-      link {
-        votes {
-          id
-          user {
-            id
-          }
-        }
-      }
-      user {
-        id
-      }
-    }
-  }
-`
+import { ALL_LINKS } from '../api/queries'
+import { LINK_VOTE } from '../api/mutations'
 
 class Link extends Component {
   render() {
-  const authToken = localStorage.getItem(AUTH_TOKEN)
+    const authToken = localStorage.getItem(AUTH_TOKEN)
+    const { index, link } = this.props
+
     return (
       <div className="flex mt2 items-start">
         <div className="flex items-center">
-          <span className="gray">{this.props.index + 1}.</span>
+          <span className="gray">{index + 1}.</span>
           {authToken && (
             <Mutation
-              mutation={VOTE_MUTATION}
-              variables={{ linkId: this.props.link.id }}
-              refetchQueries={[{ query: FEED_QUERY }]}
+              mutation={LINK_VOTE}
+              variables={{ linkId: link.id }}
+              refetchQueries={[{ query: ALL_LINKS }]}
               awaitRefetchQueries={true} >
-              {voteMutation => (
-                <div className="ml1 gray f11" onClick={voteMutation}>
+              {userVote => (
+                <div className="ml1 gray f11" onClick={userVote}>
                   ▲
                 </div>
               )}
@@ -47,14 +32,14 @@ class Link extends Component {
         </div>
         <div className="ml1">
           <div>
-            {this.props.link.description} ({this.props.link.url})
+            {link.description} ({link.url})
           </div>
           <div className="f6 lh-copy gray">
-            {this.props.link.votes.length} votes | by{' '}
-            {this.props.link.postedBy
-              ? this.props.link.postedBy.name
+            {link.votes.length} votes | by{' '}
+            {link.postedBy
+              ? link.postedBy.name
               : 'Unknown'}{' '}
-            {timeDifferenceForDate(this.props.link.createdAt)}
+            {timeDifferenceForDate(link.createdAt)}
           </div>
         </div>
       </div>

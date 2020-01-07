@@ -1,19 +1,8 @@
 import React, { Component } from 'react'
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
 
-import { FEED_QUERY } from '../constants'
-
-const POST_MUTATION = gql`
-  mutation PostMutation($description: String!, $url: String!) {
-    createLink(description: $description, url: $url) {
-      id
-      createdAt
-      url
-      description
-    }
-  }
-`
+import { ALL_LINKS } from '../api/queries'
+import { CREATE_LINK } from '../api/mutations'
 
 class CreateLink extends Component {
   state = {
@@ -23,6 +12,7 @@ class CreateLink extends Component {
 
   render() {
     const { description, url } = this.state
+
     return (
       <div>
         <div className="flex flex-column mt3">
@@ -42,12 +32,12 @@ class CreateLink extends Component {
           />
         </div>
         <Mutation
-          mutation={POST_MUTATION}
+          mutation={CREATE_LINK}
           variables={{ description, url }}
           onCompleted={() => this.props.history.push('/')}
-          refetchQueries={[{ query: FEED_QUERY }]}
+          refetchQueries={[{ query: ALL_LINKS }]}
           awaitRefetchQueries={true} >
-          {postMutation => <button onClick={postMutation}>Submit</button>}
+          {createLink => <button onClick={createLink}>Submit</button>}
         </Mutation>
       </div>
     )

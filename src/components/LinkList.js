@@ -1,63 +1,17 @@
 import React, { Component } from 'react'
 import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
 
-import { FEED_QUERY, LINKS_PER_PAGE } from '../constants'
+import { LINKS_PER_PAGE } from '../constants'
+
+import { ALL_LINKS } from '../api/queries'
+import { LINKS_SUBSCRIPTION, VOTES_SUBSCRIPTION } from '../api/subscriptions'
 
 import Link from './Link'
-
-const NEW_LINKS_SUBSCRIPTION = gql`
-  subscription {
-    newLink {
-      id
-      url
-      description
-      createdAt
-      postedBy {
-        id
-        name
-      }
-      votes {
-        id
-        user {
-          id
-        }
-      }
-    }
-  }
-`
-
-const NEW_VOTES_SUBSCRIPTION = gql`
-  subscription {
-    newVote {
-      id
-      link {
-        id
-        url
-        description
-        createdAt
-        postedBy {
-          id
-          name
-        }
-        votes {
-          id
-          user {
-            id
-          }
-        }
-      }
-      user {
-        id
-      }
-    }
-  }
-`
 
 class LinkList extends Component {
   _subscribeToNewLinks = subscribeToMore => {
     subscribeToMore({
-      document: NEW_LINKS_SUBSCRIPTION,
+      document: LINKS_SUBSCRIPTION,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
         const newLink = subscriptionData.data.newLink
@@ -65,7 +19,7 @@ class LinkList extends Component {
         if (exists) return prev;
 
         return Object.assign({}, prev, {
-          feed: {
+          allLinks: {
             links: [newLink, ...prev.allLinks.links],
             count: prev.allLinks.links.length + 1,
             __typename: prev.allLinks.__typename
@@ -77,7 +31,7 @@ class LinkList extends Component {
 
   _subscribeToNewVotes = subscribeToMore => {
     subscribeToMore({
-      document: NEW_VOTES_SUBSCRIPTION
+      document: VOTES_SUBSCRIPTION
     })
   }
 
@@ -119,7 +73,9 @@ class LinkList extends Component {
 
   render() {
     return (
-      <Query query={FEED_QUERY} variables={this._getQueryVariables()}>
+      <Query
+        query={ALL_LINKS}
+        variables={this._getQueryVariables()}>
         {({ loading, error, data, subscribeToMore }) => {
           if (loading) return <div>Fetching</div>
           if (error) return <div>Error</div>
